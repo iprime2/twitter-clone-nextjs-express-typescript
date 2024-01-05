@@ -1,0 +1,6 @@
+twitter-server/node_modules
+twitter-server/pnpm-lock.yaml
+/twitter-server/build/
+
+twitter-client/node_modules
+twitter-client/pnpm-lock.yaml
