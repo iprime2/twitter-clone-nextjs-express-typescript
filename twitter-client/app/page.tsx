@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import { GraphQLClient } from "graphql-request";
 import { verifyGoogleTokenQuery } from "@/graphql/query/user";
 import { graphClient } from "@/clients/api";
+import { useCurrentUser } from "@/hooks/user";
+import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 
 interface TwitterSideBarButton {
   title: string;
@@ -51,10 +54,16 @@ const sidebarMenuItems: TwitterSideBarButton[] = [
 ];
 
 export default function Home() {
+  const { user } = useCurrentUser();
+  const queryClient = useQueryClient();
+  console.log(user);
+
   const handleLoginWithGoogle = useCallback(
     async (cred: CredentialResponse) => {
       try {
         const googleToken = cred.credential;
+        console.log(cred);
+
         if (!googleToken) toast.error("Google Token Not found");
         const data = await graphClient.request(verifyGoogleTokenQuery, {
           token: googleToken,
@@ -69,17 +78,21 @@ export default function Home() {
             data?.verifyGoogleToken
           );
         }
+
+        await queryClient.invalidateQueries(["current-user"]);
+
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }
     },
-    []
+    [queryClient]
   );
 
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen pl-32">
-        <div className="col-span-2 flex flex-col justify-start pt-1">
+        <div className="col-span-2 flex flex-col justify-start pt-1 relative">
           <div className="h-fit w-fit text-4xl text-blue-400 cursor-pointer transition-all hover:bg-gray-400 rounded-full p-2 ml-2">
             <BsTwitter />
           </div>
@@ -98,11 +111,30 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-3 w-full items-center justify-center">
-              <button className="text-lg bg-[#1d9bf0] p-4 rounded-full w-full items-center justify-center">
+              <button className="text-lg bg-[#1d9bf0] px-4 rounded-full w-full items-center justify-center">
                 Tweet
               </button>
             </div>
           </div>
+          {user && (
+            <div className="absolute bottom-5 flex gap-2 text-white rounded-full bg-slate-800 py-3 px-2 mr-2">
+              <Image
+                className="rounded-full"
+                src={
+                  user?.profileImageUrl ||
+                  "https://avatars.githubusercontent.com/u/29702609?v=4"
+                }
+                alt="profile"
+                width={50}
+                height={50}
+              />
+              <div className="flex items-center justify-center">
+                <h3 className="md:text-xl text-xs">
+                  {user?.firstName} {user?.lastName}
+                </h3>
+              </div>
+            </div>
+          )}
         </div>
         <div className="col-span-6 border-t-0 border border-b-0 h-screen overflow-x-scroll border-gray-400">
           <FeedCard />
@@ -123,13 +155,15 @@ export default function Home() {
           <FeedCard />
         </div>
         <div className="col-span-3">
-          <div className="p-5 bg-slate-300 rounded-lg mt-5 gap-4">
-            <h1 className="text-2xl">New to Twitter</h1>
-            <GoogleLogin
-              onSuccess={handleLoginWithGoogle}
-              onError={(err: any) => console.log(err)}
-            />
-          </div>
+          {!user && (
+            <div className="p-5 bg-slate-300 rounded-lg mt-5 gap-4">
+              <h1 className="text-2xl">New to Twitter</h1>
+              <GoogleLogin
+                onSuccess={handleLoginWithGoogle}
+                onError={(err: any) => console.log(err)}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
