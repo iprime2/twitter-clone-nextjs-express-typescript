@@ -1,8 +1,14 @@
-import React from "react";
+"use client";
+import React, { useCallback } from "react";
 import { BsBell, BsBookmark, BsEnvelope, BsTwitter } from "react-icons/bs";
 import { BiHash, BiHomeCircle, BiMoney, BiUser } from "react-icons/bi";
 import { SlOptions } from "react-icons/sl";
 import FeedCard from "@/components/FeedCard";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
+import { GraphQLClient } from "graphql-request";
+import { verifyGoogleTokenQuery } from "@/graphql/query/user";
+import { graphClient } from "@/clients/api";
 
 interface TwitterSideBarButton {
   title: string;
@@ -45,6 +51,31 @@ const sidebarMenuItems: TwitterSideBarButton[] = [
 ];
 
 export default function Home() {
+  const handleLoginWithGoogle = useCallback(
+    async (cred: CredentialResponse) => {
+      try {
+        const googleToken = cred.credential;
+        if (!googleToken) toast.error("Google Token Not found");
+        const data = await graphClient.request(verifyGoogleTokenQuery, {
+          token: googleToken,
+        });
+        toast.success("verified");
+        // const { verifyGoogleToken } = data;
+        console.log(data);
+
+        if (data?.verifyGoogleToken) {
+          window.localStorage.setItem(
+            "__twitter_clone_token",
+            data?.verifyGoogleToken
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    []
+  );
+
   return (
     <div>
       <div className="grid grid-cols-12 h-screen w-screen pl-32">
@@ -91,7 +122,15 @@ export default function Home() {
           <FeedCard />
           <FeedCard />
         </div>
-        <div className="col-span-3"></div>
+        <div className="col-span-3">
+          <div className="p-5 bg-slate-300 rounded-lg mt-5 gap-4">
+            <h1 className="text-2xl">New to Twitter</h1>
+            <GoogleLogin
+              onSuccess={handleLoginWithGoogle}
+              onError={(err: any) => console.log(err)}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
