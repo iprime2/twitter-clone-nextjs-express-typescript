@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently   \"pnpm run codegen\"  next dev",
+    "dev": "concurrently \"pnpm run codegen\" next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

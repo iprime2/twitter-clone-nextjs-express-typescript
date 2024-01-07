@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+div.col-span-6::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+div.col-span-6::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+div.col-span-6::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
