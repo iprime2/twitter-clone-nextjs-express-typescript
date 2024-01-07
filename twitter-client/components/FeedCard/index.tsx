@@ -5,6 +5,7 @@ import { BiMessageRounded, BiUpload } from "react-icons/bi";
 import { FaRetweet } from "react-icons/fa";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Tweet } from "@/gql/graphql";
+import Link from "next/link";
 
 interface FeedCardButton {
   id: number;
@@ -23,9 +24,6 @@ interface FeedCardProps {
 }
 
 const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
-  console.log(tweet?.content);
-  console.log(tweet);
-
   return (
     <div className="border border-l-0 border-r-0 border-gray-600 p-5 p-b-0 hover:bg-slate-900 transition-all cursor-pointer text-white">
       <div className="grid grid-cols-12 gap-2">
@@ -34,7 +32,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
             className="object-cover rounded-full"
             src={
               tweet?.author?.profileImageURL ||
-              "https://avatars.githubusercontent.com/u/29702609?v=4"
+              "https://avatars.githubusercontent.com/u/29702609?s=400&u=1d60fa042fd0abdd0a480e3622024e3cf04384cb&v=4"
             }
             alt="Profile"
             width={100}
@@ -42,8 +40,10 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
           />
         </div>
         <div className="col-span-11">
-          <h5>
-            {tweet?.author?.firstName} {tweet?.author?.lastName}
+          <h5 className="hover:underline hover:text-sky-300">
+            <Link href={`/${tweet?.author?.id}`}>
+              {tweet?.author?.firstName} {tweet?.author?.lastName}
+            </Link>
           </h5>
           <p>{tweet?.content}</p>
           <div className="flex text-2xl text-gray-400 items-center justify-between mt-4 p-0 w-[94%]">
