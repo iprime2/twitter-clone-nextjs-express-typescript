@@ -19,15 +19,18 @@ import TwitterLayout from "@/components/TwitterLayout/TwitterLayout";
 import userAvatar from "../assets/userAvatar.png";
 
 export default function Home() {
-  // const { tweets } = useGetAllTweets();
   const { user } = useCurrentUser();
   const { mutateAsync } = useCreateTweet();
 
   const [allTweets, setAllTweets] = useState<Tweet[]>([]);
+  const { tweets = allTweets as Tweet[] } = useGetAllTweets();
   const [content, setContent] = useState("");
   const [imageURL, setImageURL] = useState("");
 
   useEffect(() => {
+    if (tweets) {
+      setAllTweets(tweets as Tweet[]);
+    }
     getAllTweets();
   }, [user?.id]);
 
@@ -143,7 +146,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {allTweets?.map((tweet: Tweet) =>
+        {tweets?.map((tweet: Tweet) =>
           tweet ? <FeedCard key={tweet?.id} tweet={tweet as Tweet} /> : null
         )}
       </TwitterLayout>

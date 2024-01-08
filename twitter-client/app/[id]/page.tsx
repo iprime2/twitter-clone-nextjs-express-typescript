@@ -1,17 +1,17 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { useCurrentUser } from "@/hooks/user";
 import FeedCard from "@/components/FeedCard";
 import { Tweet, User } from "@/gql/graphql";
 import { graphClient } from "@/clients/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
-// import {
-//   followUserMutation,
-//   unfollowUserMutation,
-// } from "@/graphql/mutation/user";
+import {
+  followUserMutation,
+  unfollowUserMutation,
+} from "@/graphql/mutation/user";
 import { useQueryClient } from "@tanstack/react-query";
 import TwitterLayout from "@/components/TwitterLayout/TwitterLayout";
 import { getUserByIdQuery } from "@/graphql/query/user";
@@ -24,30 +24,32 @@ const UserProfilePage: NextPage = () => {
   const [userInfo, setUserInfo] = useState<User>();
   const params = useParams();
 
-  // const amIFollowing = useMemo(() => {
-  //   if (!props.userInfo) return false;
-  //   return (
-  //     (currentUser?.following?.findIndex(
-  //       (el) => el?.id === props.userInfo?.id
-  //     ) ?? -1) >= 0
-  //   );
-  // }, [currentUser?.following, props.userInfo]);
+  const amIFollowing = useMemo(() => {
+    if (!userInfo) return false;
+    return (
+      (currentUser?.following?.findIndex(
+        (el: User) => el?.id === userInfo?.id
+      ) ?? -1) >= 0
+    );
+  }, [currentUser?.following, userInfo]);
 
-  // const handleFollowUser = useCallback(async () => {
-  //   if (!props.userInfo?.id) return;
+  const handleFollowUser = useCallback(async () => {
+    if (!userInfo?.id) return;
 
-  //   await graphClient.request(followUserMutation, { to: props.userInfo?.id });
-  //   await queryClient.invalidateQueries(["curent-user"]);
-  // }, [props.userInfo?.id, queryClient]);
+    await graphClient.request(followUserMutation, { to: userInfo?.id });
+    await queryClient.invalidateQueries(["curent-user"]);
+    router.refresh();
+  }, [userInfo?.id, queryClient]);
 
-  // const handleUnfollowUser = useCallback(async () => {
-  //   if (!props.userInfo?.id) return;
+  const handleUnfollowUser = useCallback(async () => {
+    if (!userInfo?.id) return;
 
-  //   await graphClient.request(unfollowUserMutation, {
-  //     to: props.userInfo?.id,
-  //   });
-  //   await queryClient.invalidateQueries(["curent-user"]);
-  // }, [props.userInfo?.id, queryClient]);
+    await graphClient.request(unfollowUserMutation, {
+      to: userInfo?.id,
+    });
+    await queryClient.invalidateQueries(["curent-user"]);
+    router.refresh();
+  }, [userInfo?.id, queryClient]);
 
   useEffect(() => {
     getUserInfo();
@@ -101,27 +103,32 @@ const UserProfilePage: NextPage = () => {
             </h1>
             <div className="flex justify-between items-center">
               <div className="flex gap-4 mt-2 text-sm text-gray-400">
-                {/* <span>{userInfo?.followers?.length} followers</span> */}
-                {/* <span>{userInfo?.following?.length} following</span> */}
+                <span>
+                  {userInfo && userInfo?.followers?.length + " followers"}
+                </span>
+                <span>
+                  {userInfo && userInfo?.following?.length + " following"}
+                </span>
               </div>
-              {/* {currentUser?.id !== userInfo?.id && (
+              {currentUser?.id !== userInfo?.id && (
                 <>
+                  {amIFollowing ? (
                     <button
-                      // onClick={handleUnfollowUser}
-                      className="bg-white text-black px-3 py-1 rounded-full text-sm"
+                      onClick={handleUnfollowUser}
+                      className="bg-sky-500 hover:bg-sky-800 text-white font-semibold px-3 py-1 rounded-full text-sm"
                     >
                       Unfollow
                     </button>
                   ) : (
                     <button
-                      // onClick={handleFollowUser}
-                      className="bg-white text-black px-3 py-1 rounded-full text-sm"
+                      onClick={handleFollowUser}
+                      className="bg-sky-500 hover:bg-sky-800 text-white font-semibold px-3 py-1 rounded-full text-sm"
                     >
                       Follow
                     </button>
                   )}
                 </>
-              )} */}
+              )}
             </div>
           </div>
           <div>
