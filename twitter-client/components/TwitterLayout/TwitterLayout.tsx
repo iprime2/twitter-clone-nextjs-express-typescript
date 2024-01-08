@@ -12,6 +12,7 @@ import { verifyGoogleTokenQuery } from "@/graphql/query/user";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { graphClient } from "@/clients/api";
+import { User } from "@/gql/graphql";
 
 interface TwitterSidebarButton {
   title: string;
@@ -160,11 +161,14 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
           ) : (
             <div className="px-4 py-3 bg-slate-800 rounded-lg">
               <h1 className="my-2 text-2xl mb-5">Users you may know</h1>
-              {user?.recommendedUsers?.map((el) => (
+              {user?.recommendedUsers?.map((el: User) => (
                 <div className="flex items-center gap-3 mt-2" key={el?.id}>
                   {el?.profileImageURL && (
                     <Image
-                      src={el?.profileImageURL}
+                      src={
+                        // el?.profileImageURL ||
+                        "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
+                      }
                       alt="user-image"
                       className="rounded-full"
                       width={60}
