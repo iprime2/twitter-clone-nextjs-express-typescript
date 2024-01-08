@@ -46,6 +46,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
             </Link>
           </h5>
           <p>{tweet?.content}</p>
+          {tweet.imageUrl && <Image src={tweet?.imageUrl} alt="image"  width={400} height={400}/> }
           <div className="flex text-2xl text-gray-400 items-center justify-between mt-4 p-0 w-[94%]">
             <div className={" hover:text-blue-400"}>
               <BiMessageRounded />

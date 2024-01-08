@@ -9,7 +9,7 @@ import { Tweet } from "@/gql/graphql";
 import { GetServerSideProps } from "next";
 import {
   getAllTweetsQuery,
-  // getSignedURLForTweetQuery,
+  getSignedURLForTweetQuery,
 } from "@/graphql/query/tweet";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -19,7 +19,7 @@ import TwitterLayout from "@/components/TwitterLayout/TwitterLayout";
 import userAvatar from "../assets/userAvatar.png";
 
 export default function Home() {
-  const { tweets } = useGetAllTweets();
+  // const { tweets } = useGetAllTweets();
   const { user } = useCurrentUser();
   const { mutateAsync } = useCreateTweet();
 
@@ -27,11 +27,9 @@ export default function Home() {
   const [content, setContent] = useState("");
   const [imageURL, setImageURL] = useState("");
 
-  // console.log(allTweets);
-
-  // useEffect(() => {
-  //   getAllTweets();
-  // }, [user?.id]);
+  useEffect(() => {
+    getAllTweets();
+  }, [user?.id]);
 
   const handleInputChangeFile = useCallback((input: HTMLInputElement) => {
     return async (event: Event) => {
@@ -39,26 +37,30 @@ export default function Home() {
       const file: File | null | undefined = input.files?.item(0);
       if (!file) return;
 
-      // const { getSignedURLForTweet } = await graphClient.request(
-      //   getSignedURLForTweetQuery,
-      //   {
-      //     imageName: file.name,
-      //     imageType: file.type,
-      //   }
-      // );
+      try {
+        const { getSignedURLForTweet } = await graphClient.request(
+          getSignedURLForTweetQuery,
+          {
+            imageName: file.name,
+            imageType: file.type,
+          }
+        );
 
-      // if (getSignedURLForTweet) {
-      //   toast.loading("Uploading...", { id: "2" });
-      //   await axios.put(getSignedURLForTweet, file, {
-      //     headers: {
-      //       "Content-Type": file.type,
-      //     },
-      //   });
-      //   toast.success("Upload Completed", { id: "2" });
-      //   const url = new URL(getSignedURLForTweet);
-      //   const myFilePath = `${url.origin}${url.pathname}`;
-      //   setImageURL(myFilePath);
-      // }
+        if (getSignedURLForTweet) {
+          toast.loading("Uploading...", { id: "2" });
+          await axios.put(getSignedURLForTweet, file, {
+            headers: {
+              "Content-Type": file.type,
+            },
+          });
+          toast.success("Upload Completed", { id: "2" });
+          const url = new URL(getSignedURLForTweet);
+          const myFilePath = `${url.origin}${url.pathname}`;
+          setImageURL(myFilePath);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
   }, []);
 
@@ -83,14 +85,14 @@ export default function Home() {
     setImageURL("");
   }, [mutateAsync, content, imageURL]);
 
-  // const getAllTweets = useCallback(async () => {
-  //   ("use server");
-  //   const allTweets = await graphClient.request(getAllTweetsQuery);
+  const getAllTweets = useCallback(async () => {
+    ("use server");
+    const allTweets = await graphClient.request(getAllTweetsQuery);
 
-  //   if (!allTweets?.getAllTweets) toast.error("No tweet was found!!");
+    if (!allTweets?.getAllTweets) toast.error("No tweet was found!!");
 
-  //   setAllTweets(allTweets.getAllTweets as Tweet[]);
-  // }, []);
+    setAllTweets(allTweets.getAllTweets as Tweet[]);
+  }, []);
 
   return (
     <div className="text-white">
@@ -141,7 +143,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {tweets?.map((tweet: Tweet) =>
+        {allTweets?.map((tweet: Tweet) =>
           tweet ? <FeedCard key={tweet?.id} tweet={tweet as Tweet} /> : null
         )}
       </TwitterLayout>
