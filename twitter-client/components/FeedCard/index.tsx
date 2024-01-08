@@ -30,10 +30,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
         <div className="col-span-1 flex items-start justify-center">
           <Image
             className="object-cover rounded-full"
-            src={
-              tweet?.author?.profileImageURL ||
-              "https://avatars.githubusercontent.com/u/29702609?s=400&u=1d60fa042fd0abdd0a480e3622024e3cf04384cb&v=4"
-            }
+            src={tweet?.author?.profileImageURL || "/userAvatar.png"}
             alt="Profile"
             width={100}
             height={100}
@@ -46,7 +43,9 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
             </Link>
           </h5>
           <p>{tweet?.content}</p>
-          {tweet.imageUrl && <Image src={tweet?.imageUrl} alt="image"  width={400} height={400}/> }
+          {tweet.imageUrl && (
+            <Image src={tweet?.imageUrl} alt="image" width={400} height={400} />
+          )}
           <div className="flex text-2xl text-gray-400 items-center justify-between mt-4 p-0 w-[94%]">
             <div className={" hover:text-blue-400"}>
               <BiMessageRounded />

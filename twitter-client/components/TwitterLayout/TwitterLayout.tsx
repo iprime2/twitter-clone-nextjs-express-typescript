@@ -7,7 +7,6 @@ import { BsBell, BsBookmark, BsEnvelope, BsTwitter } from "react-icons/bs";
 import { SlOptions } from "react-icons/sl";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
-// import { graphqlClient } from "@/clients/api";
 import { verifyGoogleTokenQuery } from "@/graphql/query/user";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -132,10 +131,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
               {user && (
                 <Image
                   className="rounded-full"
-                  src={
-                    user?.profileImageURL ||
-                    "https://avatars.githubusercontent.com/u/29702609?s=400&u=1d60fa042fd0abdd0a480e3622024e3cf04384cb&v=4"
-                  }
+                  src={user?.profileImageURL || "/userAvatar.png"}
                   alt="user-image"
                   height={50}
                   width={50}
@@ -163,12 +159,9 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
               <h1 className="my-2 text-2xl mb-5">Users you may know</h1>
               {user?.recommendedUsers?.map((el: User) => (
                 <div className="flex items-center gap-3 mt-2" key={el?.id}>
-                  {el?.profileImageURL && (
+                  {el && (
                     <Image
-                      src={
-                        // el?.profileImageURL ||
-                        "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
-                      }
+                      src={el?.profileImageURL || "/userAvatar.png"}
                       alt="user-image"
                       className="rounded-full"
                       width={60}

@@ -88,10 +88,7 @@ const UserProfilePage: NextPage = () => {
           <div className="p-4 border-b border-slate-800">
             {userInfo && (
               <Image
-                src={
-                  userInfo?.profileImageURL ||
-                  "https://avatars.githubusercontent.com/u/29702609?s=400&u=1d60fa042fd0abdd0a480e3622024e3cf04384cb&v=4"
-                }
+                src={userInfo?.profileImageURL || "/userAvatar.png"}
                 alt="user-image"
                 className="rounded-full"
                 width={100}
