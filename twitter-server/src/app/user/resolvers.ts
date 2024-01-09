@@ -4,6 +4,7 @@ import JWTService from "../../services/jwt";
 import { GraphqlContext } from "../../interfaces";
 import { User } from "@prisma/client";
 import UserService from "../../services/user";
+import { redisClient } from "../redis";
 
 const queries = {
   verifyGoogleToken: async (parent: any, { token }: { token: string }) => {
@@ -58,14 +59,14 @@ const extraResolvers = {
     },
     recommendedUsers: async (parent: User, _: any, ctx: GraphqlContext) => {
       if (!ctx.user) return [];
-      // const cachedValue = await redisClient.get(
-      //   `RECOMMENDED_USERS:${ctx.user.id}`
-      // );
+      const cachedValue = await redisClient.get(
+        `RECOMMENDED_USERS:${ctx.user.id}`
+      );
 
-      // if (cachedValue) {
-      //   console.log("Cache Found");
-      //   return JSON.parse(cachedValue);
-      // }
+      if (cachedValue) {
+        console.log("Cache Found");
+        return JSON.parse(cachedValue);
+      }
 
       const myFollowings = await prismaClient.follows.findMany({
         where: {
@@ -93,14 +94,6 @@ const extraResolvers = {
         }
       }
 
-      // console.log("Cache Not Found");
-      // await redisClient.set(
-      //   `RECOMMENDED_USERS:${ctx.user.id}`,
-      //   JSON.stringify(users)
-      // );
-
-      // write code to filter the duplicates from users if firstName and lastName is same
-
       const filteredUsers = users.filter(
         (user, index, self) =>
           index ===
@@ -108,6 +101,12 @@ const extraResolvers = {
             (u) =>
               u.firstName === user.firstName && u.lastName === user.lastName
           )
+      );
+
+      console.log("Cache Not Found");
+      await redisClient.set(
+        `RECOMMENDED_USERS:${ctx.user.id}`,
+        JSON.stringify(filteredUsers)
       );
       return filteredUsers;
     },
@@ -123,7 +122,7 @@ const mutations = {
     if (!ctx.user || !ctx.user.id) throw new Error("unauthenticated");
 
     await UserService.followUser(ctx.user.id, to);
-    // await redisClient.del(`RECOMMENDED_USERS:${ctx.user.id}`);
+    await redisClient.del(`RECOMMENDED_USERS:${ctx.user.id}`);
     return true;
   },
   unfollowUser: async (
@@ -133,7 +132,7 @@ const mutations = {
   ) => {
     if (!ctx.user || !ctx.user.id) throw new Error("unauthenticated");
     await UserService.unfollowUser(ctx.user.id, to);
-    // await redisClient.del(`RECOMMENDED_USERS:${ctx.user.id}`);
+    await redisClient.del(`RECOMMENDED_USERS:${ctx.user.id}`);
     return true;
   },
 };

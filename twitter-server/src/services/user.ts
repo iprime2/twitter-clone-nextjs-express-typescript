@@ -14,8 +14,6 @@ class UserService {
         responseType: "json",
       });
 
-      console.log(data);
-
       const user = await prismaClient.user.findUnique({
         where: { email: data.email },
       });

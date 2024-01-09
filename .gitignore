@@ -7,3 +7,5 @@ twitter-client/node_modules
 twitter-client/pnpm-lock.yaml
 twitter-client/.next/
 twitter-client/.env
+
+twitter-clone-server.pem
