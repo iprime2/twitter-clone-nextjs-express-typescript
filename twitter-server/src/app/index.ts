@@ -15,7 +15,9 @@ export async function initServer() {
   app.use(cors());
   app.use(bodyParser.json());
 
-  app.use("/", (req,res) => res.status(200).json({message:"Everything working successfully!"})  )
+  app.get("/", (req, res) =>
+    res.status(200).json({ message: "Everything working successfully!" })
+  );
 
   const graphqlServer = new ApolloServer<GraphqlContext>({
     typeDefs: `
