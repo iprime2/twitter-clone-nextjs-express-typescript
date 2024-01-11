@@ -26,14 +26,14 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-div.col-span-6::-webkit-scrollbar {
+.main-tweets::-webkit-scrollbar {
   width: 0.5em;
 }
 
-div.col-span-6::-webkit-scrollbar-track {
+.main-tweets::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-div.col-span-6::-webkit-scrollbar-thumb {
+.main-tweets::-webkit-scrollbar-thumb {
   background-color: transparent;
 }

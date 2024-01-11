@@ -26,6 +26,11 @@ export default function Home() {
   const { tweets = allTweets as Tweet[] } = useGetAllTweets();
   const [content, setContent] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (tweets) {
@@ -97,56 +102,65 @@ export default function Home() {
     setAllTweets(allTweets.getAllTweets as Tweet[]);
   }, []);
 
+  if (!isClient) {
+    return null;
+  }
+
   return (
-    <div className="text-white">
-      <TwitterLayout>
-        <div>
-          <div className="border border-r-0 border-l-0 border-b-0 border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer">
-            <div className="grid grid-cols-12 gap-3">
-              <div className="col-span-1">
-                {user && (
-                  <Image
-                    className="rounded-full"
-                    src={user?.profileImageURL || "/userAvatar.png"}
-                    alt="user-image"
-                    height={50}
-                    width={50}
-                  />
-                )}
-              </div>
-              <div className="col-span-11">
-                <textarea
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="w-full bg-transparent text-xl px-3 border-b border-slate-700"
-                  placeholder="What's happening?"
-                  rows={3}
-                ></textarea>
-                {imageURL && (
-                  <Image
-                    src={imageURL}
-                    alt="tweet-image"
-                    width={300}
-                    height={300}
-                  />
-                )}
-                <div className="mt-2 flex justify-between items-center">
-                  <BiImageAlt onClick={handleSelectImage} className="text-xl" />
-                  <button
-                    onClick={handleCreateTweet}
-                    className="bg-[#1d9bf0] font-semibold text-sm py-2 px-4 rounded-full"
-                  >
-                    Tweet
-                  </button>
+    <>
+      <div className="text-white">
+        <TwitterLayout>
+          <div>
+            <div className="border border-r-0 border-l-0 border-b-0 border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer">
+              <div className="grid grid-cols-12 gap-3">
+                <div className="col-span-1">
+                  {user && (
+                    <Image
+                      className="rounded-full"
+                      src={user?.profileImageURL || "/userAvatar.png"}
+                      alt="user-image"
+                      height={50}
+                      width={50}
+                    />
+                  )}
+                </div>
+                <div className="col-span-11">
+                  <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="w-full bg-transparent text-xl px-3 border-b border-slate-700"
+                    placeholder="What's happening?"
+                    rows={3}
+                  ></textarea>
+                  {imageURL && (
+                    <Image
+                      src={imageURL}
+                      alt="tweet-image"
+                      width={300}
+                      height={300}
+                    />
+                  )}
+                  <div className="mt-2 flex justify-between items-center">
+                    <BiImageAlt
+                      onClick={handleSelectImage}
+                      className="text-xl"
+                    />
+                    <button
+                      onClick={handleCreateTweet}
+                      className="bg-[#1d9bf0] font-semibold text-sm py-2 px-4 rounded-full"
+                    >
+                      Tweet
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {tweets?.map((tweet: Tweet) =>
-          tweet ? <FeedCard key={tweet?.id} tweet={tweet as Tweet} /> : null
-        )}
-      </TwitterLayout>
-    </div>
+          {tweets?.map((tweet: Tweet) =>
+            tweet ? <FeedCard key={tweet?.id} tweet={tweet as Tweet} /> : null
+          )}
+        </TwitterLayout>
+      </div>
+    </>
   );
 }

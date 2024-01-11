@@ -1,6 +1,6 @@
 "use client";
 import { useCurrentUser } from "@/hooks/user";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { BiHash, BiHomeCircle, BiMoney, BiUser } from "react-icons/bi";
 import { BsBell, BsBookmark, BsEnvelope, BsTwitter } from "react-icons/bs";
@@ -26,6 +26,12 @@ interface TwitterLayoutProps {
 const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
   const { user } = useCurrentUser();
   const queryClient = useQueryClient();
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const sidebarMenuItems: TwitterSidebarButton[] = useMemo(
     () => [
@@ -84,15 +90,20 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
       );
 
       toast.success("Verified Success");
-      console.log(verifyGoogleToken);
 
       if (verifyGoogleToken)
         window.localStorage.setItem("__twitter_clone_token", verifyGoogleToken);
 
       await queryClient.invalidateQueries(["curent-user"]);
+
+      window.location.reload();
     },
     [queryClient]
   );
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="text-white">
@@ -128,15 +139,13 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
           </div>
           {user && (
             <div className="absolute bottom-5 flex gap-2 items-center bg-slate-800 px-3 py-2 rounded-full">
-              {user && (
-                <Image
-                  className="rounded-full"
-                  src={user?.profileImageURL || "/userAvatar.png"}
-                  alt="user-image"
-                  height={50}
-                  width={50}
-                />
-              )}
+              <Image
+                className="rounded-full"
+                src={user?.profileImageURL || "/userAvatar.png"}
+                alt="user-image"
+                height={50}
+                width={50}
+              />
               <div className="hidden sm:block">
                 <h3 className="text-xl">
                   {user.firstName} {user.lastName}
@@ -145,7 +154,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
             </div>
           )}
         </div>
-        <div className="col-span-10 sm:col-span-5 border-r-[1px] border-l-[1px] h-screen overflow-scroll border-gray-600">
+        <div className="main-tweets col-span-10 sm:col-span-5 border-r-[1px] border-l-[1px] h-screen overflow-scroll border-gray-600">
           {props.children}
         </div>
         <div className="col-span-0 sm:col-span-3 p-5">

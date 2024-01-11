@@ -31,15 +31,23 @@ class TweetService {
 
   public static async getAllTweets() {
     const cachedTweets = await redisClient.get("ALL_TWEETS");
+    // const tweetCount = await prismaClient.tweet.count();
+
+    // if (cachedTweets?.length ?? 0 < tweetCount) {
+    //   const tweets = await prismaClient.tweet.findMany({
+    //     orderBy: { createdAt: "desc" },
+    //   });
+    //   await redisClient.set("ALL_TWEETS", JSON.stringify(tweets));
+    //   return tweets;
+    // }
+
     if (cachedTweets) {
       return JSON.parse(cachedTweets);
     }
-
     const tweets = await prismaClient.tweet.findMany({
       orderBy: { createdAt: "desc" },
     });
     await redisClient.set("ALL_TWEETS", JSON.stringify(tweets));
-
     return tweets;
   }
 }
