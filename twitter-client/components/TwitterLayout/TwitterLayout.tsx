@@ -107,22 +107,22 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
 
   return (
     <div className="text-white">
-      <div className="grid grid-cols-12 h-screen w-screen sm:px-56">
+      <div className="grid grid-cols-12 h-screen w-screen sm:px-46">
         <div className="col-span-2 sm:col-span-3 pt-1 flex sm:justify-end pr-4 relative">
           <div>
             <div className="text-2xl h-fit w-fit hover:bg-gray-800 rounded-full p-4 cursor-pointer transition-all">
               <BsTwitter />
             </div>
-            <div className="mt-1 text-xl pr-4">
+            <div className="pr-4">
               <ul>
                 {sidebarMenuItems.map((item) => (
                   <li key={item.title}>
                     <Link
-                      className="flex justify-start items-center gap-4 hover:bg-gray-800 rounded-full px-3 py-3 w-fit cursor-pointer mt-2"
+                      className="flex justify-start items-center xl:text-xl lg:gap-2 hover:bg-gray-800 rounded-full px-3 md:py-1 xl:py-2 w-fit cursor-pointer mt-2"
                       href={item.link}
                     >
-                      <span className=" text-3xl">{item.icon}</span>
-                      <span className="hidden sm:inline">{item.title}</span>
+                      <p>{item.icon}</p>
+                      <p className="hidden sm:inline">{item.title}</p>
                     </Link>
                   </li>
                 ))}
@@ -138,16 +138,16 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
             </div>
           </div>
           {user && (
-            <div className="absolute bottom-5 flex gap-2 items-center bg-slate-800 px-3 py-2 rounded-full">
+            <div className="absolute bottom-5 flex gap-2 items-center bg-slate-800 px-3 py-2 rounded-full cursor-pointer">
               <Image
-                className="rounded-full"
+                className="rounded-full lg:w-[30px] lg:h-[30px]"
                 src={user?.profileImageURL || "/userAvatar.png"}
                 alt="user-image"
                 height={50}
                 width={50}
               />
               <div className="hidden sm:block">
-                <h3 className="text-xl">
+                <h3 className="lg:text-md xl:text-xl">
                   {user.firstName} {user.lastName}
                 </h3>
               </div>
@@ -172,18 +172,19 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
                     <Image
                       src={el?.profileImageURL || "/userAvatar.png"}
                       alt="user-image"
-                      className="rounded-full"
-                      width={60}
-                      height={60}
+                      className="rounded-full w-[40px] h-[40px] xl:w-[50px] xl:h-[50px] object-cover"
+                      width={50}
+                      height={50}
                     />
                   )}
                   <div>
-                    <div className="text-lg">
+                    <div className="text-sm xl:text-lg">
                       {el?.firstName} {el?.lastName}
                     </div>
                     <Link
                       href={`/${el?.id}`}
-                      className="bg-white text-black text-sm px-5 py-1 w-full rounded-lg"
+                      className="bg-white text-black text-sm px-5 py-1 w-full rounded-lg h-4ln 
+                      acx "
                     >
                       View
                     </Link>

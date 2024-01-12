@@ -111,24 +111,22 @@ export default function Home() {
       <div className="text-white">
         <TwitterLayout>
           <div>
-            <div className="border border-r-0 border-l-0 border-b-0 border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer">
+            <div className="border border-r-0 border-l-0 border-b-0 border-gray-600 p-5 hover:bg-slate-900 focus:bg-slate-900 transition-all cursor-pointer">
               <div className="grid grid-cols-12 gap-3">
                 <div className="col-span-1">
-                  {user && (
-                    <Image
-                      className="rounded-full"
-                      src={user?.profileImageURL || "/userAvatar.png"}
-                      alt="user-image"
-                      height={50}
-                      width={50}
-                    />
-                  )}
+                  <Image
+                    className="rounded-full border-1 border-sky-500"
+                    src={user?.profileImageURL || "/userAvatar.png"}
+                    alt="user-image"
+                    height={80}
+                    width={80}
+                  />
                 </div>
                 <div className="col-span-11">
                   <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="w-full bg-transparent text-xl px-3 border-b border-slate-700"
+                    className="w-full bg-transparent lg:text-md xl:text-xl px-3 border-b border-slate-700 outline-none"
                     placeholder="What's happening?"
                     rows={3}
                   ></textarea>

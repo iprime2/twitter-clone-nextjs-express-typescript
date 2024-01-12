@@ -29,7 +29,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-1 flex items-start justify-center">
           <Image
-            className="object-cover rounded-full"
+            className="rounded-full lg:w-[30px] lg:h-[30px]"
             src={tweet?.author?.profileImageURL || "/userAvatar.png"}
             alt="Profile"
             width={100}
@@ -37,11 +37,11 @@ const FeedCard: React.FC<FeedCardProps> = ({ tweet }) => {
           />
         </div>
         <div className="col-span-11">
-          <h5 className="hover:underline hover:text-sky-300">
+          <p className="hover:underline lg:text-sm xl:text-xl hover:text-sky-300">
             <Link href={`/${tweet?.author?.id}`}>
               {tweet?.author?.firstName} {tweet?.author?.lastName}
             </Link>
-          </h5>
+          </p>
           <p>{tweet?.content}</p>
           {tweet.imageUrl && (
             <Image src={tweet?.imageUrl} alt="image" width={400} height={400} />
