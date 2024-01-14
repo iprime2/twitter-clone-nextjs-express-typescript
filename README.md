@@ -1,10 +1,12 @@
-# Twitter Clone (nextjs,expressjs, typescript, grapghql, redis, )
+# Twitter Clone
 
 https://sushil-twitter-clone-client.vercel.app
 
 This project is a full-stack web application built using Node.js and Next.js. It utilizes a GraphQL server running in a Node.js environment for the backend, with Prisma ORM for interacting with a PostgreSQL database. The database is hosted and managed using Supabase, a cloud PostgreSQL service. Redis is used for query caching on the server side, which helps to increase query speeds.
 
 The project also incorporates various authentication and authorization features. Google OAuth is used for Sign in with Google functionality, and JSON Web Tokens (JWT) are used for authentication.
+
+One of the key features of this project is user recommendation. The application recommends friends based on the user's followers. It analyzes the user's follower list and suggests potential friends who have a similar interest or connection.
 
 On the frontend, Next.js is used as the framework for building React applications. It provides server-side rendering and optimized performance. TailwindCSS is used for styling and creating reusable components. Typescript is used throughout the project to maintain code quality and write type-safe code.
 
@@ -32,7 +34,7 @@ https://github.com/iprime2/twitter-clone-nextjs-express-typescript/assets/297026
   - Graphql-Request
   - React-Query
 #### Additional:
-  - Amazon Web Services (AWS
+  - Amazon Web Services (AWS)
 
 ## Installation
 
