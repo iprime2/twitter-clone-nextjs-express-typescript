@@ -60,6 +60,7 @@ To run the project locally, follow these steps:
     pnpm run dev
     ```
   The server will start on port `localhost:4000` 
+
 4. Run below command to start server.
     ```
     cd twitter-client
