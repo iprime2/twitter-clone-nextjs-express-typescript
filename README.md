@@ -1,6 +1,6 @@
 # Twitter Clone (nextjs,expressjs, typescript, grapghql, redis, )
 
-(https://sushil-twitter-clone-client.vercel.app)[https://sushil-twitter-clone-client.vercel.app]
+https://sushil-twitter-clone-client.vercel.app
 
 This project is a full-stack web application built using Node.js and Next.js. It utilizes a GraphQL server running in a Node.js environment for the backend, with Prisma ORM for interacting with a PostgreSQL database. The database is hosted and managed using Supabase, a cloud PostgreSQL service. Redis is used for query caching on the server side, which helps to increase query speeds.
 
