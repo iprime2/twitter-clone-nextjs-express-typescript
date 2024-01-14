@@ -30,3 +30,40 @@ The project makes use of several additional tools and technologies. Codegen is u
   - React-Query
 #### Additional:
   - Amazon Web Services (AWS
+
+## Installation
+
+To run the project locally, follow these steps:
+
+1. Clone the repository.
+2. set up .env
+    1. Inside twitter-client folder create .env with following variable
+       ```
+       GOOOGLE_CLIENT_ID=
+       GOOGLE_SECRET=
+       GRAPH_URL=
+       ```
+    2. Inside twitter-server folder create .env with following variable
+       ```
+        DATABASE_URL=
+        AWS_ACCESS_KEY_ID=
+        AWS_SECRET_ACCESS_KEY=
+        AWS_DEFAULT_REGION=
+        AWS_S3_BUCKET=
+        REDIS_URL=
+        PORT=4000
+       ```
+3. Run below command to start server.
+  ```
+  cd twitter-server
+  pnpm i
+  pnpm run dev
+  ```
+  The server will start on port `localhost:4000` 
+4. Run below command to start server.
+  ```
+  cd twitter-client
+  pnpm i
+  pnpm run dev
+  ```
+  The forntend will start on `localhost:3000` 
