@@ -59,7 +59,7 @@ To run the project locally, follow these steps:
     pnpm i
     pnpm run dev
     ```
-  The server will start on port `localhost:4000` 
+    The server will start on port `localhost:4000` 
 
 4. Run below command to start server.
     ```
@@ -67,4 +67,4 @@ To run the project locally, follow these steps:
     pnpm i
     pnpm run dev
     ```
-  The forntend will start on `localhost:3000` 
+    The forntend will start and access it using `localhost:3000` 
