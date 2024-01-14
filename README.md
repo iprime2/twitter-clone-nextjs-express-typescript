@@ -10,6 +10,9 @@ On the frontend, Next.js is used as the framework for building React application
 
 The project makes use of several additional tools and technologies. Codegen is used for generating typesafe GraphQL queries and mutations. Graphql-Request is used as the API client for client-server communication. React-Query is used for client-side data caching and query caching. Amazon Web Services (AWS) is used for storage, deployments, and CDN (Content Delivery Network).
 
+## DEMO
+
+https://github.com/iprime2/twitter-clone-nextjs-express-typescript/assets/29702609/dcda3725-721d-40ef-be3c-6b6913a64d3e
 
 ## Tech Stack
 #### Backend:
