@@ -21,7 +21,6 @@ The project makes use of several additional tools and technologies. Codegen is u
   - Redis
   - Google OAuth
   - JSON Web Tokens (JWT)
-
 #### Frontend:
   - Next.js
   - TailwindCSS
@@ -29,6 +28,5 @@ The project makes use of several additional tools and technologies. Codegen is u
   - Codegen
   - Graphql-Request
   - React-Query
-
-### Additional:
+#### Additional:
   - Amazon Web Services (AWS
