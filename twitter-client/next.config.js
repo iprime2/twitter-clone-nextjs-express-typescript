@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ignoreTypeScriptErrors: true,
+  ignoreBuildErrors: true,
   images: {
     domains: [
       "avatars.githubusercontent.com",

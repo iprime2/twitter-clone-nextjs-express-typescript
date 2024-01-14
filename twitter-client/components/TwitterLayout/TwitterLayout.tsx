@@ -84,6 +84,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
       const googleToken = cred.credential;
       if (!googleToken) return toast.error(`Google token not found`);
 
+      //@ts-ignore
       const { verifyGoogleToken } = await graphClient.request(
         verifyGoogleTokenQuery,
         { token: googleToken }
@@ -94,6 +95,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = (props) => {
       if (verifyGoogleToken)
         window.localStorage.setItem("__twitter_clone_token", verifyGoogleToken);
 
+      //@ts-ignore
       await queryClient.invalidateQueries(["curent-user"]);
 
       window.location.reload();

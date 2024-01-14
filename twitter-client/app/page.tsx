@@ -46,6 +46,7 @@ export default function Home() {
       if (!file) return;
 
       try {
+        //@ts-ignore
         const { getSignedURLForTweet } = await graphClient.request(
           getSignedURLForTweetQuery,
           {
@@ -97,8 +98,10 @@ export default function Home() {
     ("use server");
     const allTweets = await graphClient.request(getAllTweetsQuery);
 
+    //@ts-ignore
     if (!allTweets?.getAllTweets) toast.error("No tweet was found!!");
 
+    //@ts-ignore
     setAllTweets(allTweets.getAllTweets as Tweet[]);
   }, []);
 

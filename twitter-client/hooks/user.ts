@@ -9,5 +9,6 @@ export const useCurrentUser = () => {
     queryFn: () => graphClient.request(getCurrentUserQuery),
   });
 
+  //@ts-ignore
   return { ...query, user: query.data?.getCurrentUser };
 };

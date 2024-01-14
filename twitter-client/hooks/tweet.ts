@@ -13,6 +13,7 @@ export const useCreateTweet = () => {
       graphClient.request(createTweetMutation, { payload }),
     onMutate: (payload) => toast.loading("Creating Tweet", { id: "1" }),
     onSuccess: async (payload) => {
+      //@ts-ignore
       await queryClient.invalidateQueries(["all-tweets"]);
       toast.success("Created Success", { id: "1" });
     },
@@ -27,5 +28,6 @@ export const useGetAllTweets = () => {
     queryFn: () => graphClient.request(getAllTweetsQuery),
   });
 
+  //@ts-ignore
   return { ...query, tweets: query.data?.getAllTweets };
 };

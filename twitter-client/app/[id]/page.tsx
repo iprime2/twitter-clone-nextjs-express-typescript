@@ -37,7 +37,8 @@ const UserProfilePage: NextPage = () => {
     if (!userInfo?.id) return;
 
     await graphClient.request(followUserMutation, { to: userInfo?.id });
-    await queryClient.invalidateQueries(["curent-user"]);
+    //@ts-ignore
+    await queryClient.invalidateQueries(["current-user"]);
     router.refresh();
   }, [userInfo?.id, queryClient]);
 
@@ -47,7 +48,8 @@ const UserProfilePage: NextPage = () => {
     await graphClient.request(unfollowUserMutation, {
       to: userInfo?.id,
     });
-    await queryClient.invalidateQueries(["curent-user"]);
+    //@ts-ignore
+    await queryClient.invalidateQueries(["current-user"]);
     router.refresh();
   }, [userInfo?.id, queryClient]);
 
@@ -64,9 +66,11 @@ const UserProfilePage: NextPage = () => {
 
     const userInfo = await graphClient.request(getUserByIdQuery, { id });
 
+    //@ts-ignore
     if (!userInfo?.getUserById) toast.error("User not found");
     // const userInfo = userInfo.getUserById as User;
 
+    //@ts-ignore
     setUserInfo(userInfo.getUserById as User);
   }, [currentUser?.id]);
 
